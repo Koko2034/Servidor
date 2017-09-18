@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <script type="text/javascript" src="../js/jquery-3.1.0.min.js"></script> 
+        <link  rel="stylesheet" href="../css/estilos.css">
+    </head>
+    <body>
+        <div class="divHeader"></div>
+        <div class="divContent">
+            <div class="divEnunciado">zero05.html</div>        
+            <label for="txtCorreo">Escriba un correo válido: </label>    
+            <input type="text" id="txtCorreo" name="txtCorreo" style="width:200px;color:#000000"> 
+        </div>
+    </body>
+    <script>
+        $(document).ready(function () {
+            $("#txtCorreo").focus();
+        });
+        $("#txtCorreo").keyup(function () {
+            $.ajax({type: "GET",
+                url: "zero05.php",
+                data: {"correo": $("#txtCorreo").val()},
+                success: function (data) {
+                    $("#txtCorreo").css('color', data);
+                }
+            });
+        });
+    </script>      
+</html>
