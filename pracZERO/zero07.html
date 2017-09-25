@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+    <title>Zero07</title>
+    <style>
+     #divContainer{
+        text-align: center;
+        width: 40%;
+        margin-left: auto;
+        margin-right:  auto;
+        margin-top:40px;
+    }</style>
+</head>
+<body>
+    <div id="divContainer">
+        <label>Introduce un texto</label>
+        <textarea name="txtTextoInicial" id="txtTextoInicial" cols="30" rows="10"></textarea>
+    </div>
+    <div id="divContainer">
+            <label>Texto invertido</label>
+            <textarea name="txtTextoInvertido" id="txtTextoInvertido" cols="30" rows="10"></textarea>
+        </div>
+        <div id="divContainer">
+                <label>Texto con palabras invertidas</label>
+                <textarea name="txtPalabrasInvertidas" id="txtPalabrasInvertidas" cols="30" rows="10"></textarea>
+            </div>
+
+</body>
+<script>
+        $(document).ready(function(){
+            $("#txtTextoInicial").focus();
+        });
+      $("#txtTextoInicial").keyup(function () {
+            $.ajax(
+    {
+      url : 'zero07.php',
+      type: 'GET',
+      data : {
+         'texto': $("#txtTextoInicial").val() 
+      },
+      success:function(data){
+          var data = jQuery.parseJSON( data);
+        $("#txtTextoInvertido").val(data.textoInvertido);
+        $("#txtPalabrasInvertidas").val(data.palabrasInvertidas);
+       
+       
+      }
+    })
+        });
+        
+      </script>
+</html>

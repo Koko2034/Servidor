@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Formulario 01</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="../js/jquery-3.1.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    </head>
+    <style>
+        form{
+            margin: 0 auto;
+            width: 600px;
+            background-color: #e9f2ff;
+        }
+        .divControl{
+            display: block;
+        }
+        label{
+            width: 18%;
+            display: inline-block;
+            text-align: right;
+            margin-right: 2%;
+        }
+        #btnEnviar{
+            margin-left: 90%;
+            padding: 5px;
+        }
+    </style>
+    <body>
+        <form method="get" action="form01.php">
+            <div class="divControl">
+                <label id="txtNombre">Nombre:</label>
+                <input id="txtNombre" type="text" name="txtNombre">
+            </div>
+            <div class="divControl">
+                <label id="txtEdad">Edad:</label>
+                <input id="txtEdad" type="text" name="txtEdad">
+            </div>
+            <div class="divControl">
+                <label id="selHobby">Hobby:</label>
+                <select id="selHobby" name="selHobby">
+                    <option value="Fútbol">Fútbol</option>
+                    <option value="Baloncesto">Baloncesto</option>
+                    <option value="Cine">Cine</option>
+                    <option value="Videojuegos">Videojuegos</option>
+                    <option value="Series">Series</option>
+                    <option value="Música">Música</option>
+                </select>
+            </div>
+            <div clas="divControl">
+                <label>Sexo:</label>
+                <label id="rdaSexo">Varón</label>
+                <input type="radio" id="rdaSexo" name="rdaSexo" value="Varón">
+                <label id="rdaSexo">Mujer</label>
+                <input type="radio" id="rdaSexo" name="rdaSexo" value="Mujer">
+                <label id="rdaSexo">NC</label>
+                <input type="radio" id="rdaSexo" name="rdaSexo" value="No Contesta">
+            </div>
+            <div class="divControl">
+                <label id="datapicker">Fecha de nacimiento:</label>
+                <input type="text" id="datepicker" name="datapicker">
+            </div>
+            <div class="divControl">
+                <label id="chkInfo">Información adicional:</label>
+                <input type="checkbox" id="chkInfo" name="chkInfo" value="checked">
+            </div>
+            <div class="divControl">
+                <label id="txtComentarios">Comentarios:</label>
+                <textarea id="txtComentarios" name="txtComentarios" rows="2" cols="25"></textarea>
+            </div>
+            <div class="divControl">
+                <label id="ficFoto">Foto:</label>
+                <input type="file" id="ficFoto" name="ficFoto" accept="image/*">
+            </div>
+            <div class="divControl">
+                <label id="ficCV">CV:</label>
+                <input type="file" id="ficCV" name="ficCV" accept="application/pdf">
+            </div>
+            <div class="divControl">
+                <button type="submit" id="btnEnviar">Enviar</button>
+            </div>
+        </form>
+    </body>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
+</html>

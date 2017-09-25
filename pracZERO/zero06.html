@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+    <title>Zero06</title>
+    <style>
+    #divContainer{
+        text-align: center;
+        width: 40%;
+        margin-left: auto;
+        margin-right:  auto;
+        margin-top:40px;
+    }
+    </style>
+</head>
+<body>
+    <div id="divContainer">
+        <label>Averigua la palabra:</label><br>
+        <input type="text" name="txtEntrada" id="txtEntrada">
+    </div>
+</body>
+<script>
+        $(document).ready(function(){
+            $("#txtEntrada").focus();
+        });
+      $("#txtEntrada").keyup(function () {
+            $.ajax(
+    {
+      url : 'zero06.php',
+      type: 'GET',
+      data : {
+         'palabra': $("#txtEntrada").val() 
+      },
+      success:function(data){
+       $("#txtEntrada").css('color',data);
+       
+      }
+    })
+        });
+        
+      </script>
+</html>

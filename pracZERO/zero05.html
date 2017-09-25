@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>zero05</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+</head>
+<body>
+    <div>
+        <label>Introduce el correo electronico</label>
+        <input type="text" id="idEmail" name="idEmail">
+    </div>
+</body>
+<script>
+    $(document).ready(function(){
+        $("#idEmail").focus();
+    })
+  $("#idEmail").keyup(function () {
+        $.ajax(
+{
+  url : 'zero04.php',
+  type: 'GET',
+  data : {
+     'correo': window.document.getElementById('idEmail').value 
+  },
+  success:function(data){
+      $("idEmail").css('color',data);
+  }
+})
+    });
+    
+  </script>
+</html>

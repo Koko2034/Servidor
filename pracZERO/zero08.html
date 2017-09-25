@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Zero08</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    #idDatos{
+        float: left;
+        width: 100%;
+    }
+    #idMunicipios{
+        display: none;
+        width: 50%;
+        margin:0 auto;
+    }
+    #idProvincias{
+        width: 50%;
+        margin:0 auto;
+    }
+</style>
+</head>
+
+<body>
+    <div class="container-fluid text-center" id="idDatos">
+        <h1>Generador de escudos</h1>
+        <div class="row">
+            
+                
+            <div class="col-6 form-group" id="idProvincias">
+                    <label>Provincias</label>
+                <select class="form-control" id="provincias" onchange="fillMunicipios()">
+                    <option disabled selected="selected">...</option>
+                </select>
+            
+        </div>
+        </div>
+        
+            <div class="col-6 form-group" id="idMunicipios">
+                    <label>Municipios</label>
+                <select class="form-control" id="municipios">
+                       
+                </select>
+            
+            </div>
+            
+    </div>  
+</body>
+
+<script>
+    $(document).ready(function () {
+                    readTextFile('provincias');
+                  
+    
+                });
+
+    function readTextFile(id) {
+        
+        $.ajax({
+            type: "GET",
+            url: "zero08.php",
+            data: {
+                "accion": id
+            },
+            success: function (data) {
+                data = JSON.parse(data).prov;
+                data.forEach(data => {
+                   
+                    $(`#${id}`).append($("<option></option>")
+                        .attr("value", data.id)
+                        .text(data.name)        
+                        );
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    function fillMunicipios(){
+
+        $.ajax({
+            type: "GET",
+            url: "zero08.php",
+            data: {
+                "accion": "municipios",
+                "codPostal":$("#provincias").val()
+            },
+            success: function (data) {
+                $("#idMunicipios").css('display',"block");
+                $(`#municipios`).html("");
+                $(`#municipios`).append($("<option></option>")
+                .attr("disabled", "disabled")
+                .attr("selected","selected")
+                .text("...")        
+                );
+                data = JSON.parse(data).mun;
+                console.log(data);
+                data.forEach(data => {
+                    $(`#municipios`).append($("<option></option>")
+                        .attr("value", data.id)
+                        .text(data.name)
+                        );
+                });
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        
+        
+    }
+
+   
+</script>
+
+</html>
