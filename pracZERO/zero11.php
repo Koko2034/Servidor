@@ -32,6 +32,12 @@
         margin:0 auto;
         width: 30%;
     }
+    .divResult{
+        width: 65%;
+        margin-top:25px;
+        font-size:20px;
+       
+    }
     
     </style>
     <title>Zero11</title>
@@ -40,33 +46,34 @@
     <div class= "container divDatos">
         <label class="control-label titulo text-center">Calcula tu distancia al horizonte</label>
         <form action="" method="POST">
-            <div class="form-group"> <!-- Full Name -->
-                <label for="txtAltura" class="control-label">Altura Persona( metros )</label>
+            <div class="form-group">
+                <label for="txtAltura" class="control-label">Altura Persona ( metros )</label>
                 <input type="number" step="0.01" min="0" required="required" class="form-control" id="txtAltura" name="txtAltura">
             </div>  
-        <div class="form-group"> <!-- Street 1 -->
+        <div class="form-group"> 
             <label for="txtExtra" class="control-label">Altura Extra</label>
             <input type="number"  step="0.01" class="form-control" id="txtExtra" name="txtExtra">
         </div>
-        <div class="form-group text-center"> <!-- Submit Button -->
-            <input type="submit" class="btn btn-primary btnEnviar" name="calcular" id="calcular" value="Calcular">
+        <div class="form-group text-center"> 
+            <input type="submit" class="btn btn-primary btnEnviar" name="calcular" id="calcular" value="calcular">
         </div>
         </form> 
     <div>
         <?php define(_RADIO,63710000);?>
         <?php $altPersona=$_POST['txtAltura']; ?>
         <?php $altExtra =$_POST['txtExtra']; ?>
-        <?php if($_POST['calcular']!='calcular' && $_POST['txtAltura']!=''){?>
-        <br><label for="txtResultado" class="control-label">La distancia que 
-            podra ver una persona que mida <?php echo $altPersona ?>
-        <?php if($altExtra!=''){?>
-            con una altura extra de <?php echo $altExtra ?>
-
-        <?php } ?>
-            es de <?php echo calcular($altPersona,$altExtra) ?>
-             Km
-             <?php clean() ?>
-       <?php } ?>        
+        <?php if($_POST['calcular']=='calcular' && $_POST['txtAltura']!=''){?>
+                <div class="container text-center divResult">
+            <br><label for="txtResultado" class="control-label">La distancia que 
+                podra ver una persona que mida <?php echo $altPersona ?> metros
+            <?php if($altExtra!=''){?>
+                    con una altura extra de <?php echo $altExtra ?> metros
+            <?php } ?>
+                es de <?php echo calcular($altPersona,$altExtra) ?>
+                Km</div>
+                <?php  clean()?>
+       <?php } ?>  
+           
         
 </body>
 
