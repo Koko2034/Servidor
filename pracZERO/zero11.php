@@ -3,7 +3,15 @@
         $vision =(sqrt((2 * ($altPersona+$altExtra) * _RADIO) + pow(($altPersona+$altExtra),2))/1000);
         return round($vision,2);
     }
+    function clean(){
+        if($_POST['calcular']=='calcular'){
+            unset($altExtra);
+            unset($altPersona);
+            unset($_POST['calcular']);
+        }
+    }
 ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,11 +42,11 @@
         <form action="" method="POST">
             <div class="form-group"> <!-- Full Name -->
                 <label for="txtAltura" class="control-label">Altura Persona( metros )</label>
-                <input type="number" min="0" required="required" class="form-control" id="txtAltura" name="txtAltura">
+                <input type="number" step="0.01" min="0" required="required" class="form-control" id="txtAltura" name="txtAltura">
             </div>  
         <div class="form-group"> <!-- Street 1 -->
             <label for="txtExtra" class="control-label">Altura Extra</label>
-            <input type="number" class="form-control" id="txtExtra" name="txtExtra">
+            <input type="number"  step="0.01" class="form-control" id="txtExtra" name="txtExtra">
         </div>
         <div class="form-group text-center"> <!-- Submit Button -->
             <input type="submit" class="btn btn-primary btnEnviar" name="calcular" id="calcular" value="Calcular">
@@ -57,6 +65,7 @@
         <?php } ?>
             es de <?php echo calcular($altPersona,$altExtra) ?>
              Km
+             <?php clean() ?>
        <?php } ?>        
         
 </body>
