@@ -68,10 +68,14 @@
 <script>
     $(document).ready(function () {
                     readTextFile('provincias');
+                    
                   
     
                 });
-
+    function clean(){
+        $("#idEscudo").css('display',"none");
+                $("#idDatos").css('width',"100%");
+    }
     function readTextFile(id) {
         
         $.ajax({
@@ -81,8 +85,9 @@
                 "accion": id
             },
             success: function (data) {
-                data = JSON.parse(data).prov;
-               
+                
+                 data = JSON.parse(data).prov;
+              
                 data.forEach(data => {
                    
                     $(`#${id}`).append($("<option></option>")
@@ -97,7 +102,7 @@
         });
     }
     function fillMunicipios(){
-
+        clean();
         $.ajax({
             type: "GET",
             url: "zero09.php",
@@ -130,7 +135,6 @@
         
     }
     function createImage(){
-       
         $.ajax({
             type: "GET",
             url: "zero09.php",
@@ -140,10 +144,11 @@
                 "name":$("#municipios option:selected").text()
             },
             success: function (data) {
-                console.log(data);
+              
                 $("#idEscudo").css('display',"block");
                 $("#idDatos").css('width',"50%");
                 data = JSON.parse(data).img;
+               // data = atob(data);
                 $("#escudo").attr("src",data);
                
                 

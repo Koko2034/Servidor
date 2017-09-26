@@ -28,7 +28,6 @@ function fileRead($file){
     global $municipios;
     $patron = "/^".$codPostal."/";
     $result=array();
-
     foreach($municipios as $municipio){
         if(preg_match($patron, $municipio["id"])){
             array_push($result,array("id"=>$municipio["id"],"name"=>$municipio["name"]));
@@ -38,46 +37,57 @@ function fileRead($file){
     
 }
 function mergeImage($codPostal, $name){
+    $imgMuni = "img/".$codPostal.".png";
     
-     $imgMuni = "img/".$codPostal.".png";
-     
-     $src = ImageCreateFromPng($imgMuni);
-     
+    $src = ImageCreateFromPng($imgMuni);
+    
     $this->createTextImage($name,$imgMuni);
-     
-     
-     header('Content-Type: image/png');
-     imagepng($src,"./prueba.png");
     
-     $imN = ImageCreateTrueColor(300,600);
-     $imN=ImageCreate(300,600);
-     $baseimagen = imagecolorallocate($imN, 255, 255, 255);
-     $ts_viewer = ImageCreateFromPng("./img/prueba.png");
-     $logo = ImageCreateFromPng($imgMuni);
- 
-     imagecopymerge($baseimagen, $ts_viewer, 0, 0, 0, 0, 300,600, 100);
-     
-     imagecopymerge($baseimagen, $logo, 0, 230, 0, 0, 300, 600, 100);
     
-     header("Content-Type: image/png");
-     $newIma ="img/".$name.".png";
-     ImagePng($baseimagen,$newIma);
-     
-    return $newIma;
+    header('Content-Type: image/png');
+    imagepng($src,"./prueba.png");
+   
+    
+    //Creamos la base de la imagen donde colocaremos luego las otras dos
+    
+    
+    $img = imagecreatetruecolor(300, 600);
+    $bg = imagecolorallocate ( $img, 255, 255, 255 );
+    imagefilledrectangle($img,0,0,120,20,$bg);
+    imagepng($img,"./img/white.png");
+    $img = ImageCreateFromPng("./img/white.png");
+    
+	$ts_viewer = ImageCreateFromPng("./img/texto.png");
+	$logo = ImageCreateFromPng($imgMuni);
+
+	imagecopymerge($img, $ts_viewer, 0, 0, 0, 0, 300,600, 100);
+	//Cargamos la segunda imagen(cuerpo)
+	
+	//Juntamos la segunda imagen con la imagen base
+	imagecopymerge($img, $logo, 0, 230, 0, 0, 300, 600, 100);
+	//Mostramos la imagen en el navegador
+    header("Content-Type: image/png");
+    $newIma ="img/".$name.".png";
+    ImagePng($img,$newIma);
+    
+	//Limpiamos la memoria 
+    
+   return $newIma;
+    
      
  
      
  }
  function createTextImage($text,$name){
-    
     header("Content-type: image/png");
     $im     = imagecreatefrompng("./img/white.png");
     $naranja = imagecolorallocate($im, 0, 0, 0);
     $px     = (imagesx($im) - 7.5 * strlen($text)) / 2;
     $py = (imagesy($im) - 7.5 * strlen($text))/2;
-    imagestring($im, 16, $px, 600, $text, $naranja);
-    imagepng($im,"./img/prueba.png");
-    imagedestroy($im);
+    imagestring($im, 16, $px, $py, $text, $naranja);
+    imagepng($im,"./img/texto.png");
+    //imagedestroy($im);
+    
     
 }
 
