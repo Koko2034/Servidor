@@ -43,6 +43,9 @@
     <title>Zero11</title>
 </head>
 <body>
+<?php if($_POST['calcular']!='calcular'){
+    header('location:http://213.32.71.33/Servidor/pracZERO/zero11.php');
+}?>
     <div class= "container divDatos">
         <label class="control-label titulo text-center">Calcula tu distancia al horizonte</label>
         <form action="" method="POST">

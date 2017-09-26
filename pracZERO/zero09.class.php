@@ -50,6 +50,7 @@ function mergeImage($codPostal, $name){
      imagepng($src,"./prueba.png");
     
      $imN = ImageCreateTrueColor(300,600);
+     $imN=ImageCreate(300,600);
      $baseimagen = imagecolorallocate($imN, 255, 255, 255);
      $ts_viewer = ImageCreateFromPng("./img/prueba.png");
      $logo = ImageCreateFromPng($imgMuni);
@@ -74,7 +75,7 @@ function mergeImage($codPostal, $name){
     $naranja = imagecolorallocate($im, 0, 0, 0);
     $px     = (imagesx($im) - 7.5 * strlen($text)) / 2;
     $py = (imagesy($im) - 7.5 * strlen($text))/2;
-    imagestring($im, 16, $px, $py, $text, $naranja);
+    imagestring($im, 16, $px, 600, $text, $naranja);
     imagepng($im,"./img/prueba.png");
     imagedestroy($im);
     
