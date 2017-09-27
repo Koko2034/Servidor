@@ -24,7 +24,7 @@ else if($str == "municipios"){
     echo json_encode(array('status'=>'ok',"mun"=>$zero->findcodPostal($codPostal)));
 }
 else if ($str == "imagen"){
-  
+   
    $imagen = ($zero->mergeImage($codPostal,$name));
    echo json_encode(array('status'=>'ok','img'=>$imagen));
 }

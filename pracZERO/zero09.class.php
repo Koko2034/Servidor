@@ -49,26 +49,32 @@ function mergeImage($codPostal, $name){
    
     
     //Creamos la base de la imagen donde colocaremos luego las otras dos
+ 
+    
+    // set background to white
     
     
-    $img = imagecreatetruecolor(300, 600);
-    $bg = imagecolorallocate ( $img, 255, 255, 255 );
-    imagefilledrectangle($img,0,0,120,20,$bg);
-    imagepng($img,"./img/white.png");
-    $img = ImageCreateFromPng("./img/white.png");
+    $img = imagecreatetruecolor(300, 450);
+   
+    $white = imagecolorallocate($img, 255, 255, 255);
+    imagefill($img, 0, 0, $white);
+    //imagepng($img,"./img/white.png");
+    //$img = ImageCreateFromPng("./img/white.png");
     
 	$ts_viewer = ImageCreateFromPng("./img/texto.png");
 	$logo = ImageCreateFromPng($imgMuni);
 
-	imagecopymerge($img, $ts_viewer, 0, 0, 0, 0, 300,600, 100);
+	imagecopymerge($img, $ts_viewer, 0, 0, 0, 0,300,600,100);
 	//Cargamos la segunda imagen(cuerpo)
 	
 	//Juntamos la segunda imagen con la imagen base
-	imagecopymerge($img, $logo, 0, 230, 0, 0, 300, 600, 100);
+	imagecopymerge($img, $logo, 0, 150, 0, 0, 300, 600, 100);
 	//Mostramos la imagen en el navegador
     header("Content-Type: image/png");
+    $name = $this->normaliza($name);
     $newIma ="img/".$name.".png";
     ImagePng($img,$newIma);
+    $newIma=base64_encode($newIma);
     
 	//Limpiamos la memoria 
     
@@ -89,6 +95,16 @@ function mergeImage($codPostal, $name){
     //imagedestroy($im);
     
     
+}
+function normaliza ($cadena){
+    $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
+ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
+bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+    $cadena = utf8_decode($cadena);
+    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+    $cadena = strtolower($cadena);
+    return utf8_encode($cadena);
 }
 
 }

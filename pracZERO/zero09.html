@@ -148,7 +148,7 @@
                 $("#idEscudo").css('display',"block");
                 $("#idDatos").css('width',"50%");
                 data = JSON.parse(data).img;
-               // data = atob(data);
+                data = atob(data);
                 $("#escudo").attr("src",data);
                
                 
