@@ -11,19 +11,20 @@ function renombrar($nameFoto){
     $contNamefoto = strlen($nameFoto)-4;
     $cont = count($valores); 
     $contador=0;
+    $nameFotoPrincipal = substr($nameFoto,0,(strlen($nameFoto)-4));
+    $extension = substr($nameFoto,$contNamefoto,strlen($nameFoto));
     for($i=2;$i<$cont;$i++){ 
-        if(substr($nameFoto,0,(strlen($nameFoto)-4)) == substr($valores[$i],0,$contNamefoto)){
+        if( $nameFotoPrincipal == substr($valores[$i],0,$contNamefoto)){
             $contador++;
         }
     }
     if($contador!=0){
-        $nameFoto = substr($nameFoto,0,(strlen($nameFoto)-4)).$contador++.substr($nameFoto,$contNamefoto,strlen($nameFoto));
+        $nameFoto = $nameFotoPrincipal.$contador++.$extension;
     }
-    return $nameFoto;
+    return getcwd().'/'.$nameFoto;
 }
 
-$nameFoto = renombrar($_FILES['ficFoto']['name']);
-$ruta =getcwd().'/'.$nameFoto;
+$ruta = renombrar($_FILES['ficFoto']['name']);
 $nameFoto.rename($_FILES['ficFoto']['tmp_name'],$ruta);
 
 
