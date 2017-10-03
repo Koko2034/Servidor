@@ -65,13 +65,17 @@ function modifyJson($nombre,$distancia){
     unlink(INFO);
     file_put_contents(INFO,$json_distancia);
 }
+
 $nombre=$_POST['txtNombre'];
 $opcion = $_POST['texto'];
+$lat=$_POST['txtLat'];
+$lon=$_POST['txtLon'];
+
 if($opcion=="crear"){
       if(!file_exists(FICHERO)){
         genXML();
       }
-      createUser($nombre);
+      createUser($nombre,$lat,$lon);
       $result = PostToHost('localhost', 'http://213.32.71.33/Servidor/pracFORM/wsGeo.php', "", http_build_query($_POST));
       if(!file_exists(INFO)){
        createJson($nombre,$result);

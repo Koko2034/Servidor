@@ -8,15 +8,39 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0sXA3G8vzWU5ZeB-CTsRSLF4i9F64e8M&callback=initMap" defer></script>
+    
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
     <title>Form07</title>
     <style>
     header{
       font-size: 40px;
+      margin-top:30px;
       margin-bottom: 20px;
       text-align:center;
     }
     #divTable{
       display:none;
+    }
+    .map{
+        min-width:400px;
+        min-height:400px;
+        width: 85%;
+    }
+    .rowMapa{
+      margin-left:10%;
+      margin-right:-20%;
+    }
+    .divMapa{
+      margin: 0 auto;
+    
+      
     }
     </style>
 </head>
@@ -27,24 +51,53 @@
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="txtNombre">Nombre:</label>
                   <div class="col-sm-10">
-                    <input type="number" class="form-control"  id="txtNombre" name="txtNombre" placeholder="Introduzca su nombre" required>
+                    <input type="text" class="form-control"  id="txtNombre" name="txtNombre" placeholder="Introduzca su nombre" required>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-sm-2" for="txtLat">Latitud:</label>
                   <div class="col-sm-10"> 
-                    <input type="number" class="form-control" max="180" min="180" step="any" id="txtLat" name="txtLat" placeholder="Introduzca latitud" required>
+                    <input type="number" class="form-control" max="180" min="-180" step="any" id="txtLat" name="txtLat" placeholder="Introduzca latitud" required>
                   </div>
                 </div>
                 <div class="form-group">
                         <label class="control-label col-sm-2" for="txtLon">Longitud:</label>
                         <div class="col-sm-10"> 
-                          <input type="text" class="form-control" max="180" min="180" step="any" id="txtLon" name="txtLon" placeholder="Introduzca longitud" required>
+                          <input type="number" class="form-control" max="180" min="-180" step="any" id="txtLon" name="txtLon" placeholder="Introduzca longitud" required>
                         </div>
                       </div>
                 <div class="form-group"> 
                   <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Introducir</button>
+                  
+                    <button type="submit" class="btn btn-default" data-toggle="modal" data-target="#myModal">Introducir</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                        
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Informacion</h4>
+                            </div>
+                            <div class="modal-body">
+                              <p>Sus datos han sido enviados</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+
+
+
+
+
+
+
                     <button type="button" id="butConsult" class="btn btn-default">Consultar</button>
                   </div>
                 </div>
@@ -58,7 +111,13 @@
               </div>
             </div>
         </div>    
-                  
+        <div class="container divMapa">
+            <div class="rowMapa">
+
+                    <div id="map" class="map"></div>
+            </div>
+                
+            </div>          
 </body>
 <script>
    var form = $('#frmData');
@@ -113,6 +172,7 @@
                       data = JSON.parse(data);
                       showTable(data);
                       $("#divForm").css('display',"none");
+                      $(".divMapa").css('display',"none");
                       $("#divTable").css('display',"block");
                      
                     
@@ -124,6 +184,7 @@
         $("#butBack").click(function () {
           $("#divForm").css('display',"block");
             $("#divTable").css('display',"none");
+            $(".divMapa").css('display',"block");
         });
 
         
@@ -138,5 +199,31 @@
 
           $('#divInfo').html(str);
         }
+        function initMap() {
+        let markers=[];
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 36.7152,
+                lng: -4.4282
+            },
+            zoom: 10
+        });
+        google.maps.event.addListener(map, 'click', function (event) {
+        
+            if(markers.length>0){
+                markers[0].setMap(null); 
+                markers.pop();
+            }       
+            marker = new google.maps.Marker({position: event.latLng, map: map});
+            lat = marker.position.lat().toFixed(4);
+            lon = marker.position.lng().toFixed(4);
+            
+           markers.push(marker);
+
+               txtLat.value = lat;
+                txtLon.value = lon;
+           
+        });
+    }
 </script>
 </html>
