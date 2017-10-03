@@ -15,7 +15,7 @@ class zero08{
 function fileRead($file){
     $result=array();
       if (($gestor = fopen($file, "r")) !== FALSE) {
-          while (($datos = fgetcsv($gestor, 1000, ";")) !== FALSE) {
+          while (($datos = fgetcsv($gestor, 1000, ",")) !== FALSE) {
               $numero = count($datos);
               array_push($result,array("id"=>$datos[0],"name"=>$datos[1]));
           }

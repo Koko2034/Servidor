@@ -19,7 +19,7 @@ and open the template in the editor.
                     dateFormat: 'dd/mm/yy',
                     changeMonth: true,
                     changeYear: true,
-                    yearRange: '2016:2017'
+                    yearRange: '1900:2015'
                 });
             });
         </script>
@@ -42,17 +42,16 @@ and open the template in the editor.
         fieldset p{
             clear: both;
         }
-        #divForm{
-            float: left;
-        }
-        #divDatos{
-            float: left;
-            padding-left: 10%;
+        #prevFoto {
+            float: none;
+            left: 320px;
+            position: absolute;
+            top: 425px;
         }
     </style>
     <body>
         <div id="divForm">
-            <form id="formDatos" action="form03.php">
+            <form enctype="multipart/form-data" id="formDatos" action="form05.php">
                 <fieldset>
                     <legend>Formulario de recogida de datos</legend>
                     <p><label>Nombre:</label><br>
@@ -74,61 +73,43 @@ and open the template in the editor.
                         <input type="text" id="txtFecNac" name="txtFecNac"></p>
                     <p><label>Info: </label>
                         <input type="radio" name="rdaInfo" value="Sí">Sí
-                        <input type="radio" name="rdaInfo" value="No" checked="checked">No
+                        <input type="radio" name="rdaInfo" value="No" checked>No
                     <p><label>Comentarios:</label><br>
                         <input type="text" name="txtComentarios"></p>
-                    <button type="button" id="butEnviar">Enviar</button>
+                    <p><label>Foto:</label><br>
+                        <input type="file" id="ficFoto" accept=".jpg, .jpeg, .png" name="ficFoto"></p>
+                    <img id="prevFoto" alt="" width="100" height="100" />
+                    <p><label>Curriculum:</label><br>
+                        <input type="file" name="ficCV"></p>
+                    <input type="submit" name="butEnviar">
                 </fieldset>
             </form>
         </div>
         <div id="divDatos"></div>
     </body>
     <script>
-        $.datepicker.regional['es'] = {
-            closeText: 'Cerrar',
-            prevText: '< Ant',
-            nextText: 'Sig >',
-            currentText: 'Hoy',
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-            weekHeader: 'Sm',
-            dateFormat: 'dd/mm/yy',
-            firstDay: 1,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-            };
-            $.datepicker.setDefaults($.datepicker.regional['es']);
-            $("#txtFecNac").datepicker({
-                onClose: function(selectedDate) {
-                  //  $.cookie("fechaJquery", selectedDate);
-                   // docCookies.setItem("fecha",selectedDate,infinity);
-      }
-    });
-            $(document).ready(function () {
-            var form = $('#formDatos');
-            $('#butEnviar').click(function () {
-                $.ajax({
-                    type: "GET",
-                    url: form.attr('action'),
-                    data: form.serialize() + "&control=10",
-                    success: function (response) {
-                        respuesta = JSON.parse(response);
-                        console.log(respuesta);
-                        html='<span>El nombre es: '+respuesta.nombre+'</span><br>';
-                        html+='<span>La edad es: '+respuesta.edad+'</span><br>'; 
-                        html+='<span>La fecha es: '+respuesta.fecha+'</span><br>';
-                        html+='<span>La aficion es: '+respuesta.aficion+'<span><br>';
-                        html+='<span>El sexo es: '+respuesta.sexo+'<span><br>';
-                        html+='<span>Los comentarios son: '+respuesta.comentarios+'</span><br>';
-                        html+='<span>El control es: '+respuesta.control+'</span><br>';   
-                         
-                      $('#divDatos').html(html);
-                    }
-                });
+        $("#ficFoto").change(function () {
+            $('#prevFoto')[0].src = window.URL.createObjectURL(this.files[0]);
+        });
+        var form = $('#formDatos');
+        form.submit(function (event) {
+            //disable the default form submission
+            event.preventDefault();
+            //grab all form data  
+            var formData = new FormData($(this)[0]);
+            formData.append('control', '101');
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (returndata) {
+                    returndata=JSON.parse(returndata);
+                    $('#divDatos').html(returndata);
+                }
             });
         });
     </script>

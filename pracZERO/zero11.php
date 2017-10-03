@@ -7,7 +7,7 @@
         if($_POST['calcular']=='calcular'){
             unset($altExtra);
             unset($altPersona);
-            unset($_POST['calcular']);
+            $_POST['txtAltura']="";
         }
     }
 ?>
@@ -43,10 +43,11 @@
     <title>Zero11</title>
 </head>
 <body>
-<?php if($_POST['calcular']!='calcular'){
-    $ruta = getcwd();
-    header('location:'.$ruta.'/zero11.php');
-}?>
+    <?php if(!empty($_POST['calcular']) && $_POST['txtAltura']=""){
+        echo "Hola que pasa Raul";
+        
+    }
+    ?>
     <div class= "container divDatos">
         <label class="control-label titulo text-center">Calcula tu distancia al horizonte</label>
         <form action="" method="POST">
@@ -66,7 +67,7 @@
         <?php define(_RADIO,63710000);?>
         <?php $altPersona=$_POST['txtAltura']; ?>
         <?php $altExtra =$_POST['txtExtra']; ?>
-        <?php if($_POST['calcular']=='calcular' && $_POST['txtAltura']!=''){?>
+        <?php if($_POST['calcular']=='calcular' && $_POST['txtAltura']>0){?>
                 <div class="container text-center divResult">
             <br><label for="txtResultado" class="control-label">La distancia que 
                 podra ver una persona que mida <?php echo $altPersona ?> metros
@@ -75,7 +76,8 @@
             <?php } ?>
                 es de <?php echo calcular($altPersona,$altExtra) ?>
                 Km</div>
-                <?php  clean()?>
+                <?php clean();
+               ?>
        <?php } ?>  
            
         

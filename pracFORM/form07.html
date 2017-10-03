@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="../js/jquery-3.1.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <title>Form07</title>
+    <style>
+    header{
+      font-size: 40px;
+      margin-bottom: 20px;
+      text-align:center;
+    }
+    #divTable{
+      display:none;
+    }
+    </style>
+</head>
+<body>
+        <header>Distancias al politecnico</header>
+        <div class="container" id="divForm">
+        <form class="form-horizontal" method="POST" enctype="application/x-www-form-urlencoded" action="form07.php" id="frmData">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="txtNombre">Nombre:</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control"  id="txtNombre" name="txtNombre" placeholder="Introduzca su nombre" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="txtLat">Latitud:</label>
+                  <div class="col-sm-10"> 
+                    <input type="number" class="form-control" max="180" min="180" step="any" id="txtLat" name="txtLat" placeholder="Introduzca latitud" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                        <label class="control-label col-sm-2" for="txtLon">Longitud:</label>
+                        <div class="col-sm-10"> 
+                          <input type="text" class="form-control" max="180" min="180" step="any" id="txtLon" name="txtLon" placeholder="Introduzca longitud" required>
+                        </div>
+                      </div>
+                <div class="form-group"> 
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Introducir</button>
+                    <button type="button" id="butConsult" class="btn btn-default">Consultar</button>
+                  </div>
+                </div>
+              </form>
+        </div>
+        <div class="container" id="divTable">
+          <div id="divInfo"></div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                  <button type="button" class="btn btn-default" id="butBack">Volver</button>
+              </div>
+            </div>
+        </div>    
+                  
+</body>
+<script>
+   var form = $('#frmData');
+        $( document ).ready(function() {
+          $.ajax(
+                    {
+                    url : 'form07.php',
+                    type: 'POST',
+                    data : {
+                        'texto': 'inicio' 
+                    },
+                    success:function(data){
+                      data = JSON.parse(data);
+                      if(data.mensaje==='no existe'){
+                        $("#butConsult").prop('disabled',true);
+                      }
+                    }
+                    })
+            });
+       
+        form.submit(function (event) {
+            event.preventDefault();
+            var formData = new FormData($(this)[0]);
+            formData.append('texto','crear');
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (returndata) {
+                  returndata=JSON.parse(returndata);
+                  console.log(returndata)
+                    if(returndata.mensaje==='existe'){
+                      $("#butConsult").prop('disabled',false);
+                    }
+                  
+                }
+            });
+        });
+        $("#butConsult").click(function () {
+            $.ajax(
+                    {
+                    url : 'form07.php',
+                    type: 'POST',
+                    data : {
+                        'texto': 'check' 
+                    },
+                    success:function(data){
+                      data = JSON.parse(data);
+                      showTable(data);
+                      $("#divForm").css('display',"none");
+                      $("#divTable").css('display',"block");
+                     
+                    
+                    
+                    }
+                    })
+        });
+
+        $("#butBack").click(function () {
+          $("#divForm").css('display',"block");
+            $("#divTable").css('display',"none");
+        });
+
+        
+        function showTable(data){
+          str='<table class="table"><thead><tr><th>Nombre</th><th>Distancia politecnico</th></tr></thead><tbody>';
+       
+         for(k in data){
+      
+            str+='<tr><td>'+data[k].nombre+'</td><td>'+data[k].distancia+'</td></tr>';
+          }
+          str+='</tbody></table>';
+
+          $('#divInfo').html(str);
+        }
+</script>
+</html>
